@@ -18,8 +18,28 @@ window.App = {
   // Bootstrap the MetaCoin abstraction for Use.
   EcommerceStore.setProvider(web3.currentProvider);
   renderStore();
+
+  $("#add-item-to-store").submit(function(event){
+    console.log("Hola Nenes");
+    const req = $("#add-item-to-store").serialize();
+    let params = JSON.parse('{"'+req.replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}');
+    let decodeParams ={}
+    Object.keys(params).forEach(function(v){
+      decodeParams[v] = decodeURIComponent(decodeURI(params[v]));
+    });
+    console.log(decodeParams);
+    saveProduct(decodeParams);
+    event.preventDefault();
+  });
  }
 };
+
+function saveProduct(product){
+  EcommerceStore.deployed().then(function(f){
+    return f.addProductToStore(product["product-name"],product["product-category"],"imageLink","descLink",Date.parse(product["product-start-time"])/1000, web3.toWei(product["product-price"],'ether'),product["product-condition"],{from: web3.eth.accounts[0], gas: 4700000} );
+  }).then(function(f){alert("Prodcut added to store!")});
+}
+
 
 function renderStore(){
   //get the product count
