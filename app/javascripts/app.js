@@ -37,6 +37,20 @@ window.App = {
     saveProduct(decodeParams);
     event.preventDefault();
   });
+
+  $("#buy-now").submit(function(event){
+    $("#msg").hide();
+    var sendAmount = $("#buy-now-price").val();
+    var productId = $("#product-id").val();
+    EcommerceStore.deployed().then(function(i){
+      i.buy(productId,{value: sendAmount,from: web3.eth.accounts[0],gas: 440000}).then(function(){
+        $("#msg").show();
+        $("#msg").html("You have succesfully purchased the product");
+      })
+    });  
+    event.preventDefault();
+  });
+
  }
 };
 
@@ -45,8 +59,8 @@ function renderProductDetails(productId){
     f.getProduct.call(productId).then(function(p){
       $("#product-name").html(p[1]);
       $("#product-price").html(displayPrice(p[6]));
-      $("#product-id").html(p[0]);
-      $("#buy-now-price").html(displayPrice(p[6]));
+      $("#product-id").val(p[0]);
+      $("#buy-now-price").val(p[6]);
     })
   })
 }
