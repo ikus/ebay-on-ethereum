@@ -17,7 +17,13 @@ window.App = {
 
   // Bootstrap the MetaCoin abstraction for Use.
   EcommerceStore.setProvider(web3.currentProvider);
-  renderStore();
+  if($("#product-details").length>0){
+    let productId = new URLSearchParams(window.location.search).get('id');
+    renderProductDetails(productId);
+  }else{
+    renderStore();  
+  }
+  
 
   $("#add-item-to-store").submit(function(event){
     console.log("Hola Nenes");
@@ -33,6 +39,18 @@ window.App = {
   });
  }
 };
+
+function renderProductDetails(productId){
+  EcommerceStore.deployed().then(function(f){
+    f.getProduct.call(productId).then(function(p){
+      $("#product-name").html(p[1]);
+      $("#product-price").html(displayPrice(p[6]));
+      $("#product-id").html(p[0]);
+      $("#buy-now-price").html(displayPrice(p[6]));
+    })
+  })
+}
+
 
 function saveProduct(product){
   EcommerceStore.deployed().then(function(f){
@@ -61,6 +79,7 @@ function renderProduct(instance,index){
     node.addClass("col-sm-3 text-center col-margin-bottom-1 product");
     node.append("<div class='title'>"+f[1]+"</div>");
     node.append("<div> Price: "+ displayPrice(f[6])+"</div>");
+    node.append("<a href='product.html?id="+f[0]+"'>Details</a>");
     if( f[8]=== "0x0000000000000000000000000000000000000000"){
         $("#product-list").append(node);
     }else{
