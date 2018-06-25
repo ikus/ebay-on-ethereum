@@ -1,6 +1,6 @@
 pragma solidity ^0.4.23;
 
-contract Escrow{
+contract  Escrow {
     address public buyer;
     address public seller;
     address public arbiter;
@@ -25,7 +25,7 @@ contract Escrow{
         owner = msg.sender;
     }
     
-    function excrowInfo() view public returns(address,address,address,bool,uint,uint){
+    function escrowInfo() view public returns(address,address,address,bool,uint,uint){
         return(buyer,seller,arbiter,fundsDisbursed,releaseCount,refundCount);
     }
     
