@@ -72,6 +72,10 @@ function renderProductDetails(productId){
       $("#product-price").html(displayPrice(p[6]));
       $("#product-id").val(p[0]);
       $("#buy-now-price").val(p[6]);
+      ipfs.cat(p[4]).then(function(file){
+        var content = file.toString();
+        $("#product-description").append("<div>"+content+"</div>");
+      })
     })
   })
 }
