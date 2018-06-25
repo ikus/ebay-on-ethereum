@@ -61,6 +61,34 @@ window.App = {
     event.preventDefault();
   });
 
+  $("#release-funds").click(function(event){
+    let productId = new URLSearchParams(window.location.search).get('id');
+    EcommerceStore.deployed().then(function(f){
+      $("#msg").html("Your tranasaction has been submited. Please wait for few seconds for the confirmation").show();
+      console.log(productId);
+      f.releaseAmountToSeller(productId,{from: web3.eth.accounts[0]}).then(function(f){
+        console.log(f);
+        location.reload();
+      }).catch(function(e){
+        console.log(e);
+      })
+    });
+  });
+
+  $("#refund-funds").click(function(event){
+    let productId = new URLSearchParams(window.location.search).get('id');
+    EcommerceStore.deployed().then(function(f){
+      $("#msg").html("Your tranasaction has been submited. Please wait for few seconds for the confirmation").show();
+      console.log(productId);
+      f.refundAmountToBuyer(productId,{from: web3.eth.accounts[0]}).then(function(f){
+        console.log(f);
+        location.reload();
+      }).catch(function(e){
+        console.log(e);
+      })
+    });
+  });
+
  }
 };
 
@@ -76,6 +104,18 @@ function renderProductDetails(productId){
         var content = file.toString();
         $("#product-description").append("<div>"+content+"</div>");
       })
+      if(p[8]=='0x0000000000000000000000000000000000000000'){
+        $("#escrow-info").hide();
+      }else{
+        $("#buy-now").hide();
+        f.escrowInfo.call(productId).then(function(i){
+          $("#buyer").html(i[0]);
+          $("#seller").html(i[1]);
+          $("#arbiter").html(i[2]);
+          $("#release-count").html(i[4].toNumber());
+          $("#refund-count").html(i[5].toNumber());
+        });
+      }
     })
   })
 }
