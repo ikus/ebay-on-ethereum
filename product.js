@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/my_database';
+var mongoDB = 'mongodb://127.0.0.1:27017/ebay_db';
 mongoose.connect(mongoDB);
 
 
