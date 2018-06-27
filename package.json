@@ -36,6 +36,6 @@
     "ipfs-api": "18.1.1",
     "mongoose": "4.11.7",
     "express": "4.15.4",
-    "ndoemon": "^1.11.0"
+    "nodemon": "^1.11.0"
   }
 }
