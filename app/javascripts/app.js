@@ -172,7 +172,7 @@ function saveTextBlobOnIpfs(blob){
 function renderStore(){
   //get the product count
   //Loop trrough and fetch all the products by id
-  var instance;
+  /*var instance;
   return EcommerceStore.deployed().then(function(f){
     instance=f;
     return instance.productIndex.call();
@@ -180,9 +180,23 @@ function renderStore(){
     for (var i = 1; i <= count; i++) {
       renderProduct(instance,i);
     }
+  });*/
+  $.ajax({    
+    url: "http://127.0.0.1:3000/products",
+    type: 'get',
+    contentType: "application-json; charset=utf-8",
+    data: {}
+  }).done(function(data){
+    while(data.length > 0){
+      let chunks = data.splice(0,4);
+      chunks.forEach(function(value){
+        renderProduct(value);
+      });
+    }
+
   });
 }
-
+/*
 function renderProduct(instance,index){
   instance.getProduct.call(index).then(function(f){
     let node = $("<div/>");
@@ -198,6 +212,22 @@ function renderProduct(instance,index){
       $("#product-purchased").append(node);
     }
   });
+}*/
+
+function renderProduct(product){
+  console.log(product);
+  let node = $("<div/>");
+    node.addClass("col-sm-3 text-center col-margin-bottom-1 product");
+    //node.append("<img src='http://localhost:8080/ipfs/"+f[3]+"'/>");
+    node.append("<img src='http://ipfs.io/ipfs/"+product.ipfsImageHash+"'/>");
+    node.append("<div class='title'>"+product.name+"</div>");
+    node.append("<div> Price: "+ displayPrice(product.price)+"</div>");
+    node.append("<a href='product.html?id="+product.blockchainId+"'>Details</a>");
+    if( product.buyer === "0x0000000000000000000000000000000000000000"){
+        $("#product-list").append(node);
+    }else{
+      $("#product-purchased").append(node);
+    }
 }
 
 function displayPrice(amt){
