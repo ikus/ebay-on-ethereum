@@ -22,6 +22,18 @@ app.get('/',function(req,res){
 	res.send("Hello, Ethereum!");
 });
 
+
+app.get('/products',function(req,res){
+	var query={};
+	if(req.query.category !=== undefined){
+		query['category'] = {$eq: req.query.category};
+	}
+	ProductModel.find(query,null,{sort: 'startTime'},function(err,items){
+		console.log(items.lenght);
+		res.send(items);
+	});
+});
+
 setupProductEventlistener();
 
 function setupProductEventlistener(){

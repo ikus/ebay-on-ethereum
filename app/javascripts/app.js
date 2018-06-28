@@ -96,7 +96,8 @@ function renderProductDetails(productId){
   EcommerceStore.deployed().then(function(f){
     f.getProduct.call(productId).then(function(p){
       $("#product-name").html(p[1]);
-      $("#product-image").html("<img src='http://localhost:8080/ipfs/"+p[3]+"'/>");
+      //$("#product-image").html("<img src='http://localhost:8080/ipfs/"+p[3]+"'/>");
+      $("#product-image").html("<img src='http://ipfs.io/ipfs/"+p[3]+"'/>");
       $("#product-price").html(displayPrice(p[6]));
       $("#product-id").val(p[0]);
       $("#buy-now-price").val(p[6]);
@@ -186,7 +187,8 @@ function renderProduct(instance,index){
   instance.getProduct.call(index).then(function(f){
     let node = $("<div/>");
     node.addClass("col-sm-3 text-center col-margin-bottom-1 product");
-    node.append("<img src='http://localhost:8080/ipfs/"+f[3]+"'/>");
+    //node.append("<img src='http://localhost:8080/ipfs/"+f[3]+"'/>");
+    node.append("<img src='http://ipfs.io/ipfs/"+f[3]+"'/>");
     node.append("<div class='title'>"+f[1]+"</div>");
     node.append("<div> Price: "+ displayPrice(f[6])+"</div>");
     node.append("<a href='product.html?id="+f[0]+"'>Details</a>");
